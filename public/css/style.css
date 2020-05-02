@@ -76,6 +76,17 @@
   margin-bottom: 10px;
 }
 
+#inner-webpage-content-order {
+  background-color: orange;
+  overflow: hidden;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  top: 10px;
+  margin-bottom: 10px;
+}
+
 #all-orders-table {
   border-collapse: collapse;
   border: 1px solid black;
@@ -95,4 +106,92 @@
   border: 1px solid black;
   text-align: center;
   font-size: 18px;
+}
+
+#customer-forms {
+  overflow: hidden;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  display: block;
+}
+
+#existing-customer {
+  /* background-color: purple; */
+  float: left;
+  height: fit-content;
+  width: fit-content;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 40px;
+
+}
+
+#customer-information {
+  float: right;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#inner-webpage-content-order h3 {
+  text-align: center;
+}
+
+#order-information {
+  overflow: hidden;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  display: block;
+}
+
+#order-form {
+  width: 250px;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#order-status {
+  width: 600px;
+  float: right;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#store-information-title {
+  text-align: center;
+}
+
+#store-table {
+  width: 100%;
+}
+
+#store-table th {
+  width: 25%;
+  text-align: center;
+}
+
+#store-table td {
+  width: 25%;
+  text-align: center;
+}
+
+#computer-information-title {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#computer-table {
+  width: 100%;
+}
+
+#computer-table th {
+  width: 20%;
+  text-align: center;
+}
+
+#computer-table td {
+  width: 20%;
+  text-align: center;
 }
