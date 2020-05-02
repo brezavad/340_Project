@@ -1,0 +1,98 @@
+#link1-block {
+  top: 0px;
+  width: 100%;
+  height: 100px;
+  background-color: red;
+}
+
+#link1-container {
+  float: right;
+  right: 15px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#link1-background {
+  box-shadow: 0 0 10px rgb(77, 77, 77);
+  background-color: rgba(245, 245, 245, 0.85);
+  border-radius: 12px;
+  height: 70px;
+  width: 645px;
+  float: right;
+  position: relative;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.link1 {
+  position: relative;
+  text-align: center;
+  padding-bottom: 5px;
+  line-height: 0px;
+  font-size: 20px;
+  width: 140px;
+  height: 35px;
+  margin: 0px 5px 0px 5px;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  transition-duration: 0.2s;
+  border: 3px solid rgb(48, 107, 141);
+  border-radius: 12px;
+}
+
+.link1:hover {
+  background-color: rgb(48, 107, 141);
+  color: white;
+}
+
+#outer-webpage-content {
+  background-color: blue;
+  position: absolute;
+  width: 100%;
+  top: 100px;
+  bottom: 0px;
+  overflow: auto;
+}
+
+#inner-webpage-content {
+  background-color: orange;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#inner-webpage-content-allorders {
+  background-color: orange;
+  position: relative;
+  width: 90%;
+  height: fit-content;
+  margin: auto;
+  top: 10px;
+  margin-bottom: 10px;
+}
+
+#all-orders-table {
+  border-collapse: collapse;
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+}
+
+#all-orders-table th {
+  width: 20%;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 25px;
+}
+
+#all-orders-table td {
+  width: 20%;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 18px;
+}

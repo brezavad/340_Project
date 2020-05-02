@@ -1,0 +1,17 @@
+{
+  "name": "final-project",
+  "version": "1.0.0",
+  "description": "Final Project",
+  "main": "assignment5.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Brezavar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.2",
+    "express-handlebars": "^2.0.1",
+    "request": "^2.88.2",
+    "forever": "^2.0.0"
+  }
+}
