@@ -9,11 +9,15 @@ app.set('port', 13331);
 app.use(express.static('public'));
 
 app.get('/', function(req, res) {
-  res.render('index')
+  res.render('index');
 });
 
 app.get('/order', function(req, res) {
   res.render('order');
+});
+
+app.get('/customers', function(req, res) {
+  res.render('customers');
 });
 
 app.get('/allorders', function(req, res) {
