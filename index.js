@@ -28,6 +28,10 @@ app.get('/inventory', function(req, res) {
   res.render('inventory');
 });
 
+app.get('/stores', (req, res) => {
+  res.render('stores');
+});
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');
