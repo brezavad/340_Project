@@ -6,6 +6,10 @@ hr {
   border-color: white;
 }
 
+.nav-item {
+  font-size: 20px;
+}
+
 #link1-block {
   top: 0px;
   width: 100%;
@@ -28,7 +32,7 @@ hr {
   background-color: rgba(110, 110, 110, 0.50);
   border-radius: 12px;
   height: 70px;
-  width: 660px;
+  width: fit-content;
   float: right;
   position: relative;
   right: 20px;
@@ -42,7 +46,7 @@ hr {
   padding-bottom: 5px;
   line-height: 0px;
   font-size: 20px;
-  width: 120px;
+  width: 160px;
   height: 35px;
   margin: 0px 2px 0px 2px;
   background-color: rgb(255, 255, 255);
@@ -60,11 +64,18 @@ hr {
   color: white;
 }
 
+nav {
+  height: 75px;
+  width: 100%;
+}
+
 #outer-webpage-content {
-  background-color: rgb(69, 69, 83);
+  /* background-color: rgb(69, 69, 83); */
+  /* background-color: rgb(36, 78, 130); */
+  background-color: rgb(21, 45, 74);
   position: absolute;
   width: 100%;
-  top: 100px;
+  top: 75px;
   bottom: 0px;
   overflow: auto;
 }
@@ -122,6 +133,18 @@ hr {
 
 #inner-webpage-content-order button {
   color: black;
+}
+
+#existing-customer button {
+  color: black;
+}
+
+#customer-order button {
+  color: black;
+}
+
+#add-customer-hr {
+  width: 45%;
 }
 
 #customers-table {
@@ -255,5 +278,21 @@ hr {
 
 #computer-table td {
   width: 20%;
+  text-align: center;
+}
+
+h4 {
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+}
+
+#all-customer-table {
+  text-align: center;
+}
+
+#all-order-table {
   text-align: center;
 }

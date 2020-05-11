@@ -7,19 +7,23 @@ var request = require('request');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('port', 13331);
+app.set('port', 13131);
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
   res.render('index');
 });
 
-app.get('/order', function (req, res) {
-  res.render('order');
+app.get('/addcustomers', function (req, res) {
+  res.render('addcustomers');
 });
 
-app.get('/customers', function (req, res) {
-  res.render('customers');
+app.get('/allcustomers', function (req, res) {
+  res.render('allcustomers');
+});
+
+app.get('/order', function (req, res) {
+  res.render('order');
 });
 
 app.get('/allorders', function (req, res) {

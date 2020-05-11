@@ -1,43 +1,15 @@
 <div id="inner-webpage-content-order">
-    <div id="customer-forms">
-        <div id="existing-customer">
-            <form id="existing-customer">
-                <h4>Existing Customers</h4>
-                <hr>
-                <div class="form-group">
-                    <label for="existing-email">Enter Email: </label>
-                    <input type="text" class="form-control" id="existing-email" placeholder="Enter you email...">
-                </div>
-                <button type="submit" form="existing-customer">Find Records</button>
-            </form>
-        </div>
-        <div id="customer-information">
-            <form id="customer-order">
-                <h4>Customer Information</h4>
-                <hr>
-                <div class="form-group">
-                    <label for="first-name">First Name: </label>
-                    <input type="text" class="form-control" id="first-name" placeholder="Enter your first name...">
-                </div>
-                <div class="form-group">
-                    <label for="last-name">Last Name: </label>
-                    <input type="text" class="form-control" id="last-name" placeholder="Enter your last name...">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email: </label>
-                    <input type="text" class="form-control" id="email" placeholder="Enter your email...">
-                </div>
-            </form>
-        </div>
-    </div>
-    <hr>
-    <h3>Order</h3>
+    <h3>Order Computers Here</h3>
     <hr id="order-hr">
     <div id="order-information">
         <div id="order-information-form">
             <div id="order-form">
                 <h4>Order Information</h4>
                 <hr>
+                <div class="form-group">
+                    <label for="customer-email">Customer email (required): </label>
+                    <input type="text" class="form-control" id="order-email" placeholder="Enter you email...">
+                </div>
                 <div class="form-group">
                     <label for="store-info">Store: </label>
                     <select id="store-info"></select>
@@ -50,11 +22,12 @@
                     <label for="quantity">Quantity </label>
                     <input type="number" class="form-control" id="quantity" placeholder="Enter quantity...">
                 </div>
-                <button type="submit" form="order-form">Order</button>
+                <button type="submit" form="order-form">Place Order</button>
             </div>
             <div id="order-status">
-                <h4 id="store-information-title">Store Information</h4>
+                <h4>Available Inventory</h4>
                 <hr id="store-information-hr">
+                <h4 id="store-information-title"><u>Store Information</u></h4>
                 <table id="store-table">
                     <tr>
                         <th>Address</th>
@@ -69,9 +42,9 @@
                         <td>12345</td>
                     </tr>
                 </table>
-                <hr id="table-separator-hr">
-                <h4 id="computer-information-title">Computer Inventory</h4>
+                {{!-- <hr id="table-separator-hr"> --}}
                 <hr id="computer-information-hr">
+                <h4 id="computer-information-title"><u>Computer Information</u></h4>
                 <table id="computer-table">
                     <tr>
                         <th>Description</th>

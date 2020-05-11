@@ -8,18 +8,22 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
   <body>
-    <div id="link1-block">
-      <div id="link1-background">
-        <div id="link1-container">
-          <a href="/"><button class="link1" type="button">Home</button></a>
-          <a href="/order"><button class="link1" type="button">Order</button></a>
-          <a href="/customers"><button class="link1" type="button">Customers</button></a>
-          <a href="/allorders"><button class="link1" type="button">All Orders</button></a>
-          <a href="/stores"><button class="link1" type="button">Stores</button></a>
-          <a href="/inventory"><button class="link1" type="button">Inventory</button></a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/">Home</a>
+          <a class="nav-item nav-link" href="/addcustomers">Add Customers</a>
+          <a class="nav-item nav-link" href="/allcustomers">All Customers</a>
+          <a class="nav-item nav-link" href="/order">Order</a>
+          <a class="nav-item nav-link" href="/allorders">All Orders</a>
+          <a class="nav-item nav-link" href="/stores">Stores</a>
+          <a class="nav-item nav-link" href="/inventory">Inventory</a>
         </div>
       </div>
-    </div>
+    </nav>
     <div id="outer-webpage-content">
       {{{body}}} 
     </div>
