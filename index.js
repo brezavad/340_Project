@@ -29,6 +29,12 @@ app.get('/addcustomers', function (req, res) {
 
 app.get('/allcustomers', function (req, res) {
   res.render('allcustomers');
+  db.query('SELECT * FROM customers', function (err, rows) {
+    if(err) {
+      throw err;
+    }
+    console.log(rows);
+  });
 });
 
 app.get('/order', function (req, res) {
