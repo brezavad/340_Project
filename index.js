@@ -4,11 +4,20 @@ var handlebars = require('express-handlebars').create({
   defaultLayout: 'main',
 });
 var request = require('request');
+const db = require('./db/dbConfig');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 13131);
 app.use(express.static('public'));
+
+db.connect(function(err) {
+  if(err) {
+    console.log(err.message);
+    return;
+  }
+  console.log('Connected to database');
+});
 
 app.get('/', function (req, res) {
   res.render('index');
