@@ -51,16 +51,16 @@ CREATE TABLE inventory (
     inventory_id int AUTO_INCREMENT PRIMARY KEY,
     computer_id int NOT NULL,
     store_id int NOT NULL,
-    quantity int,
+    quantity int NOT NULL,
     FOREIGN KEY(computer_id) REFERENCES computer_systems(computer_id),
     FOREIGN KEY(store_id) REFERENCES stores(store_id)
 );
 
 -- insert mock data into inventory table
-INSERT INTO inventory (computer_id, store_id)
-VALUES (3, 1),
-(1, 2),
-(2, 3);
+INSERT INTO inventory (computer_id, store_id, quantity)
+VALUES (3, 1, 10),
+(1, 2, 20),
+(2, 3, 30);
 
 -- create orders table
 DROP TABLE IF EXISTS orders;
