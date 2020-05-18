@@ -51,6 +51,7 @@ CREATE TABLE inventory (
     inventory_id int AUTO_INCREMENT PRIMARY KEY,
     computer_id int NOT NULL,
     store_id int NOT NULL,
+    quantity int,
     FOREIGN KEY(computer_id) REFERENCES computer_systems(computer_id),
     FOREIGN KEY(store_id) REFERENCES stores(store_id)
 );
