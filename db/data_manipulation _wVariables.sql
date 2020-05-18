@@ -75,7 +75,7 @@ SET @c_id = (SELECT computer_id
              and ram = :userInputRam
              and hard_drive = :userInputDrive
              and screen_size = :userInputScreen);
-INSERT INTO inventory (computer_id, store_id, quantity) VALUES (@c_id, 3, 55);
+INSERT INTO inventory (computer_id, store_id, quantity) VALUES (@c_id, :userInputStore, :userInputQuantity);
 -- select all inventory information
 SELECT inventory.store_id,
        inventory.computer_id,
