@@ -1,4 +1,5 @@
 -- create customers table
+DROP TABLE IF EXISTS customers;
 CREATE TABLE customers (
     customer_id int AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(256) NOT NULL,
@@ -13,6 +14,7 @@ VALUES('Rebecca', 'Johnson', 'rjonhson@gmail.com'),
 ('Emma', 'Wilson', 'ewilson@gmail.com');
 
 -- create stores table
+DROP TABLE IF EXISTS stores;
 CREATE TABLE stores (
     store_id int AUTO_INCREMENT PRIMARY KEY,
     street_address VARCHAR(256) NOT NULL,
@@ -28,6 +30,7 @@ VALUES ('1 Broad Street', 'New York City', 'NY', '10065'),
 ('5 Central Avenue', 'San Francisco', 'CA', '94016');
 
 -- create computer systems table
+DROP TABLE IF EXISTS computer_systems;
 CREATE TABLE computer_systems (
     computer_id int AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(256) NOT NULL,
@@ -43,6 +46,7 @@ VALUES ('New computer designed for personal use.', 8, 128, 16),
 ('Used computer designed for portability.', 4, 128, 12);
 
 -- create inventory table
+DROP TABLE IF EXISTS inventory;
 CREATE TABLE inventory (
     inventory_id int AUTO_INCREMENT PRIMARY KEY,
     computer_id int NOT NULL,
@@ -58,6 +62,7 @@ VALUES (3, 1),
 (2, 3);
 
 -- create orders table
+DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
     order_id int AUTO_INCREMENT PRIMARY KEY,
     customer_id int,
