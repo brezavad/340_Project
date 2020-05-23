@@ -35,12 +35,27 @@ app.get('/allcustomers', function (req, res)  {
     if (err) {
       throw err;
     }
-    for (let i = 0; i < rows.length; i++) {
-      customerData.push(rows[i]);
-    }
+    
   }
-  process.nextTick(queryCallback);
-  db.query(getCustomersQuery, process.nextTick(queryCallback));
+  function getCustomers(cb) {
+    db.query(getCustomersQuery, function (err, rows) {
+      if(err) {
+        cb(err, null);
+      } else {
+        for (let i = 0; i < rows.length; i++) {
+          customerData.push(rows[i]);
+        }
+        cb(null, customerData);
+      }
+    });
+  }
+  getCustomers(function(err, data) {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(data);
+    }
+  });
   res.render('allcustomers', {customers: customerData});
   console.log(customerData);
   
