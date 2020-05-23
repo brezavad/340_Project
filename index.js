@@ -31,15 +31,16 @@ app.get('/allcustomers', function (req, res)  {
   const getCustomersQuery =
     'SELECT customer_id, first_name, last_name, email FROM customers';
   const customerData = [];
-  const queryCallback = db.query(getCustomersQuery, function (err, rows) {
+  const queryCallback = function (err, rows) {
     if (err) {
       throw err;
     }
     for (let i = 0; i < rows.length; i++) {
       customerData.push(rows[i]);
     }
-  });
+  }
   process.nextTick(queryCallback);
+  db.query(getCustomersQuery, process.nextTick(queryCallback));
   res.render('allcustomers', {customers: customerData});
   console.log(customerData);
   
