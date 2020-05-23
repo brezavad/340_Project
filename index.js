@@ -53,7 +53,6 @@ app.get('/allcustomers', function (req, res)  {
     if(err) {
       console.log(err);
     } else {
-      console.log(data);
       res.render('allcustomers', { customers: customerData });
     }
   });
