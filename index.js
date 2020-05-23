@@ -49,13 +49,17 @@ app.get('/allcustomers', function (req, res)  {
       }
     });
   }
-  getCustomers(function(err, data) {
-    if(err) {
-      console.log(err);
-    } else {
-      res.render('allcustomers', { customers: customerData });
-    }
+  
+  process.nextTick(function() {
+    getCustomers(function(err, data) {
+      if(err) {
+        console.log(err);
+      } else {
+        res.render('allcustomers', {customers: data});
+      }
+    });
   });
+  
   
   
 });
