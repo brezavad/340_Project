@@ -19,6 +19,21 @@ db.connect(function (err) {
   console.log('Connected to database');
 });
 
+function getCustomers(res, db, context, complete) {
+  db.query(
+    'SELECT customer_id, first_name, last_name, email FROM customers',
+    function (error, results) {
+      if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.customers = results;
+
+      complete();
+    }
+  );
+}
+
 app.get('/', function (req, res) {
   res.render('index');
 });
@@ -27,41 +42,20 @@ app.get('/addcustomers', function (req, res) {
   res.render('addcustomers');
 });
 
-app.get('/allcustomers', function (req, res)  {
-  const getCustomersQuery =
-    'SELECT customer_id, first_name, last_name, email FROM customers';
-  const customerData = [];
-  const queryCallback = function (err, rows) {
-    if (err) {
-      throw err;
+app.get('/allcustomers', function (req, res) {
+  // const getCustomersQuery =
+  //   'SELECT customer_id, first_name, last_name, email FROM customers';
+  let context = {};
+  let callBackCount = 0;
+
+  getCustomers(res, db, context, complete);
+
+  function complete() {
+    callBackCount++;
+    if (callBackCount >= 2) {
+      res.render('allcustomers', context);
     }
-    
   }
-  function getCustomers(cb) {
-    db.query(getCustomersQuery, function (err, rows) {
-      if(err) {
-        cb(err, null);
-      } else {
-        for (let i = 0; i < rows.length; i++) {
-          customerData.push(rows[i]);
-        }
-        cb(null, customerData);
-      }
-    });
-  }
-  
-  process.nextTick(function() {
-    getCustomers(function(err, data) {
-      if(err) {
-        console.log(err);
-      } else {
-        res.render('allcustomers', {customers: data});
-      }
-    });
-  });
-  
-  
-  
 });
 
 app.get('/order', function (req, res) {
