@@ -30,13 +30,18 @@ app.get('/addcustomers', function (req, res) {
 app.get('/allcustomers', function (req, res) {
   const getCustomersQuery =
     'SELECT customer_id, first_name, last_name, email FROM customers';
-  res.render('allcustomers');
+  const customerData = [];
   db.query(getCustomersQuery, function (err, rows) {
     if (err) {
       throw err;
     }
-    console.log(rows);
+    for (let i = 0; i < rows.length; i++) {
+      customerData.push(rows[i]);
+    }
   });
+  res.render('allcustomers', {customers: customerData});
+  console.log(customerData);
+  
 });
 
 app.get('/order', function (req, res) {
