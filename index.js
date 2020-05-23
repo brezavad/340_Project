@@ -54,10 +54,10 @@ app.get('/allcustomers', function (req, res)  {
       console.log(err);
     } else {
       console.log(data);
+      res.render('allcustomers', { customers: customerData });
     }
   });
-  res.render('allcustomers', {customers: customerData});
-  console.log(customerData);
+  
   
 });
 
