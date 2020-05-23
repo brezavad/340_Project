@@ -11,8 +11,8 @@ app.set('view engine', 'handlebars');
 app.set('port', 13131);
 app.use(express.static('public'));
 
-db.connect(function(err) {
-  if(err) {
+db.connect(function (err) {
+  if (err) {
     console.log(err.message);
     return;
   }
@@ -28,9 +28,11 @@ app.get('/addcustomers', function (req, res) {
 });
 
 app.get('/allcustomers', function (req, res) {
+  const getCustomersQuery =
+    'SELECT customer_id, first_name, last_name, email FROM customers';
   res.render('allcustomers');
-  db.query('SELECT * FROM customers', function (err, rows) {
-    if(err) {
+  db.query(getCustomersQuery, function (err, rows) {
+    if (err) {
       throw err;
     }
     console.log(rows);
