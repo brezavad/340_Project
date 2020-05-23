@@ -27,11 +27,11 @@ app.get('/addcustomers', function (req, res) {
   res.render('addcustomers');
 });
 
-app.get('/allcustomers', function async (req, res)  {
+app.get('/allcustomers', function (req, res)  {
   const getCustomersQuery =
     'SELECT customer_id, first_name, last_name, email FROM customers';
   const customerData = [];
-  await db.query(getCustomersQuery, function (err, rows) {
+  const queryCallback = db.query(getCustomersQuery, function (err, rows) {
     if (err) {
       throw err;
     }
@@ -39,6 +39,7 @@ app.get('/allcustomers', function async (req, res)  {
       customerData.push(rows[i]);
     }
   });
+  process.nextTick(queryCallback);
   res.render('allcustomers', {customers: customerData});
   console.log(customerData);
   
