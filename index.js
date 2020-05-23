@@ -52,7 +52,7 @@ app.get('/allcustomers', function (req, res) {
 
   function complete() {
     callBackCount++;
-    if (callBackCount >= 2) {
+    if (callBackCount >= 1) {
       res.render('allcustomers', context);
     }
   }
