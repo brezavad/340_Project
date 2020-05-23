@@ -27,11 +27,11 @@ app.get('/addcustomers', function (req, res) {
   res.render('addcustomers');
 });
 
-app.get('/allcustomers', function (req, res) {
+app.get('/allcustomers', function async (req, res)  {
   const getCustomersQuery =
     'SELECT customer_id, first_name, last_name, email FROM customers';
   const customerData = [];
-  db.query(getCustomersQuery, function (err, rows) {
+  await db.query(getCustomersQuery, function (err, rows) {
     if (err) {
       throw err;
     }
