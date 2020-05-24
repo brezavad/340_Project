@@ -12,13 +12,15 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each customers}}
                 <tr>
-                    <td>2</td>
-                    <td>Dwight</td>
-                    <td>Schrute</td>
-                    <td>{{context[0].email}}</td>
+                    <td>{{customer_id}}</td>
+                    <td>{{first_name}}</td>
+                    <td>{{last_name}}</td>
+                    <td>{{email}}</td>
                     <td>Delete</td>
                 </tr>
+                </each>
             </tbody>
         </table>
     </div>
