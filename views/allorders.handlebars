@@ -12,13 +12,15 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each orders}}
                 <tr>
-                <td>1</td>
-                <td>ffffffffffffffff</td>
-                <td>eeeeeeeeeeeeeee</td>
-                <td>dddddddddddddddd</td>
+                <td>{{order_id}}</td>
+                <td>{{first_name last_name}}</td>
+                <td>{{computer_id}}</td>
+                <td>{{quantity}}</td>
                 <td>Fullfill Order</td>
                 </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>

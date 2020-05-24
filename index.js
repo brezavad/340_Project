@@ -53,14 +53,31 @@ function getInventory(res, db, context, complete) {
     `SELECT cs.description, cs.ram, cs.screen_size, cs.hard_drive, inv.quantity, 
     s.street_address FROM computer_systems cs 
     INNER JOIN inventory inv ON cs.computer_id = inv.inventory_id 
-    INNER JOIN stores s ON s.store_id = inv.inventory_id`, function(error, results) {
-      if(error) {
+    INNER JOIN stores s ON s.store_id = inv.inventory_id`,
+    function (error, results) {
+      if (error) {
         res.write(JSON.stringify(error));
       }
       console.log(results);
 
       context.inventory = results;
 
+      complete();
+    }
+  );
+}
+
+function getOrders(res, db, context, complete) {
+  db.query(`SELECT o.order_id, cu.first_name, cu.last_name, co.id, o.quantity FROM orders o 
+INNER JOIN customers cu ON o.order_id = cu.customer_id
+INNER JOIN inventory i ON i.inventory_id = o.order_id
+INNER JOIN computer_systems co ON i.inventory_id = co.computer_id;`,
+    function (error, results) {
+      if(error) {
+        res.write(JSON.stringify(error));
+      }
+
+      context.orders = results;
       complete();
     }
   );
@@ -75,8 +92,6 @@ app.get('/addcustomers', function (req, res) {
 });
 
 app.get('/allcustomers', function (req, res) {
-  // const getCustomersQuery =
-  //   'SELECT customer_id, first_name, last_name, email FROM customers';
   let context = {};
   let callBackCount = 0;
 
@@ -95,7 +110,17 @@ app.get('/order', function (req, res) {
 });
 
 app.get('/allorders', function (req, res) {
-  res.render('allorders');
+  let context = {};
+  let callBackCount = 0;
+
+  getOrders(res, db, context, complete);
+
+  function complete() {
+    callBackCount++;
+    if (callBackCount >= 1) {
+      res.render('allorders', context);
+    }
+  }
 });
 
 app.get('/inventory', function (req, res) {
