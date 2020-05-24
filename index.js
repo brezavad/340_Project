@@ -71,7 +71,7 @@ function getOrders(res, db, context, complete) {
   db.query(`SELECT o.order_id, cu.first_name, cu.last_name, co.computer_id, o.quantity FROM orders o 
 INNER JOIN customers cu ON o.order_id = cu.customer_id
 INNER JOIN inventory i ON i.inventory_id = o.order_id
-INNER JOIN computer_systems co ON i.inventory_id = co.computer_id;`,
+INNER JOIN computer_systems co ON i.inventory_id = co.computer_id`,
     function (error, results) {
       if(error) {
         res.write(JSON.stringify(error));
