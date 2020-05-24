@@ -57,6 +57,7 @@ function getInventory(res, db, context, complete) {
       if(error) {
         res.write(JSON.stringify(error));
       }
+      console.log(results);
 
       context.inventory = results;
 
