@@ -40,21 +40,27 @@
                 <tr>
                     <th>Computer Description</th>
                     <th>Computer Ram</th>
+                    <th>Hard Drive</th>
                     <th>Computer Screen Size</th>
                     <th>Quantity</th>
+                    <th>Store Address</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
+                {{#each inventory}}
                 <tr>
-                    <td>Computer 1</td>
-                    <td>8</td>
-                    <td>32</td>
-                    <td>3</td>
+                    <td>{{description}}</td>
+                    <td>{{ram}}</td>
+                    <td>{{hard_drive}}</td>
+                    <td>{{screen_size}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{street_address}}</td>
                     <td>Edit</td>
                     <td>Delete</td>
                 </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>

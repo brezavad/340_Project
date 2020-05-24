@@ -35,14 +35,34 @@ function getCustomers(res, db, context, complete) {
 }
 
 function getStores(res, db, context, complete) {
-  db.query('SELECT store_id, street_address, city, state, zipcode FROM stores', function(error, results) {
-    if(error) {
-      res.write(JSON.stringify(error));
-    }
-    context.stores = results;
+  db.query(
+    `SELECT SELECT store_id, street_address, city, state, zipcode FROM stores`,
+    function (error, results) {
+      if (error) {
+        res.write(JSON.stringify(error));
+      }
+      context.stores = results;
 
-    complete();
-  });
+      complete();
+    }
+  );
+}
+
+function getInventory(res, db, context, complete) {
+  db.query(
+    `SELECT cs.description, cs.ram, cs.screen_size, cs.hard_drive, inv.quantity, 
+    s.street_address FROM computer_systems cs 
+    INNER JOIN inventory inv ON cs.computer_id = inv.inventory_id 
+    INNER JOIN stores s ON s.store_id = inv.inventory_id`, function(error, results) {
+      if(error) {
+        res.write(JSON.stringify(error));
+      }
+
+      context.inventory = results;
+
+      complete();
+    }
+  );
 }
 
 app.get('/', function (req, res) {
@@ -78,7 +98,17 @@ app.get('/allorders', function (req, res) {
 });
 
 app.get('/inventory', function (req, res) {
-  res.render('inventory');
+  let context = {};
+  let callBackCount = 0;
+
+  getStores(res, db, context, complete);
+
+  function complete() {
+    callBackCount++;
+    if (callBackCount >= 1) {
+      res.render('inventory', context);
+    }
+  }
 });
 
 app.get('/stores', function (req, res) {
@@ -93,7 +123,6 @@ app.get('/stores', function (req, res) {
       res.render('stores', context);
     }
   }
-  
 });
 
 app.use(function (req, res) {
