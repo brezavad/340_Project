@@ -102,7 +102,7 @@ app.get('/inventory', function (req, res) {
   let context = {};
   let callBackCount = 0;
 
-  getStores(res, db, context, complete);
+  getInventory(res, db, context, complete);
 
   function complete() {
     callBackCount++;
