@@ -34,6 +34,17 @@ function getCustomers(res, db, context, complete) {
   );
 }
 
+function getStores(res, db, context, complete) {
+  db.query('SELECT store_id, street_address, city, state, zipcode', function(error, results) {
+    if(error) {
+      res.write(JSON.stringify(error));
+    }
+    context.stores = results;
+
+    complete();
+  });
+}
+
 app.get('/', function (req, res) {
   res.render('index');
 });
@@ -71,7 +82,18 @@ app.get('/inventory', function (req, res) {
 });
 
 app.get('/stores', function (req, res) {
-  res.render('stores');
+  let context = {};
+  let callBackCount = 0;
+
+  getStores(res, db, context, complete);
+
+  function complete() {
+    callBackCount++;
+    if (callBackCount >= 1) {
+      res.render('stores', context);
+    }
+  }
+  
 });
 
 app.use(function (req, res) {

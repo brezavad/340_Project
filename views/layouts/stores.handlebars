@@ -17,12 +17,15 @@
     <div class="container">
         <table class="table">
             <thead>
+                {{#each stores}}
                 <tr>
-                    <th>Store Id</th>
-                    <th>Store Address</th>
-                    <th>City</th>
-                    <th>State</th>
+                    <th>{{store_id}}</th>
+                    <th>{{address}}</th>
+                    <th>{{city}}</th>
+                    <th>{{state}}</th>
+                    <th>{{zipcode}}</th>
                 </tr>
+                <{{/each}}>
             </thead>
             <tbody>
                 <tr>
