@@ -40,6 +40,7 @@ function getStores(res, db, context, complete) {
     function (error, results) {
       if (error) {
         res.write(JSON.stringify(error));
+        res.end();
       }
       context.stores = results;
 
@@ -75,6 +76,7 @@ INNER JOIN computer_systems co ON i.inventory_id = co.computer_id`,
     function (error, results) {
       if(error) {
         res.write(JSON.stringify(error));
+        res.end();
       }
 
       context.orders = results;
@@ -118,7 +120,7 @@ app.get('/allorders', function (req, res) {
   function complete() {
     callBackCount++;
     if (callBackCount >= 1) {
-      res.render('allorders', context);
+       res.render('allorders', context);
     }
   }
 });
