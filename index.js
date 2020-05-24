@@ -36,7 +36,7 @@ function getCustomers(res, db, context, complete) {
 
 function getStores(res, db, context, complete) {
   db.query(
-    `SELECT SELECT store_id, street_address, city, state, zipcode FROM stores`,
+    `SELECT  store_id, street_address, city, state, zipcode FROM stores`,
     function (error, results) {
       if (error) {
         res.write(JSON.stringify(error));
