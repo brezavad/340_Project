@@ -17,6 +17,18 @@
     <div class="container">
         <table class="table">
             <thead>
+
+                <tr>
+                    <th>Store Id</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zipcode</th>
+                </tr>
+
+
+            </thead>
+            <tbody>
                 {{#each stores}}
                 <tr>
                     <th>{{store_id}}</th>
@@ -26,14 +38,6 @@
                     <th>{{zipcode}}</th>
                 </tr>
                 <{{/each}}>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>1 Central Avenue</td>
-                    <td>New York City</td>
-                    <td>NY</td>
-                </tr>
             </tbody>
         </table>
     </div>
