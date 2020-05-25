@@ -81,7 +81,7 @@ function processInventoryPage(type) {
 }
 
 function getStoreId() {
-    data = {};
+    let data = {};
     let store = getId("store-info");
 
     data.store = store.value;
@@ -89,9 +89,27 @@ function getStoreId() {
     return data;
 }
 
+function placeOrder() {
+    let data = {};
+    let email = getId("order-email");
+    let store = getId("store-info");
+    let comp = getId("computer-info");
+    let quant = getId("order-quantity");
+
+    data.email = email.value;
+    data.store = store.value;
+    data.computer = comp.value;
+    data.quantity = quant.value;
+
+    return data;
+}
+
 function processOrderPage(type) {
     if (type == "store") {
         return getStoreId();
+    }
+    else if (type == "order") {
+        return placeOrder();
     }
 }
 

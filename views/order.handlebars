@@ -11,7 +11,7 @@
                     <input type="text" class="form-control" id="order-email" placeholder="Enter you email...">
                 </div>
                 <div class="form-group">
-                    <label for="store-info">Store: </label>
+                    <label for="store-info">Store (required): </label>
                     <select id="store-info">
                         <option value=""></option>
                         {{#each stores}}
@@ -20,53 +20,66 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="computer-info">Computer: </label>
+                    <label for="computer-info">Computer (required): </label>
                     <select id="computer-info">
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="quantity">Quantity </label>
-                    <input type="number" class="form-control" id="quantity" placeholder="Enter quantity...">
+                    <label for="quantity">Quantity (required): </label>
+                    <input type="number" class="form-control" id="order-quantity" placeholder="Enter quantity...">
                 </div>
-                <button type="submit" form="order-form">Place Order</button>
+                <button type="submit" id="place-order" form="order-form">Place Order</button>
             </div>
             <div id="order-status">
                 <h4>Available Inventory</h4>
                 <hr id="store-information-hr">
-                <h4 id="store-information-title"><u>Store Information</u></h4>
+                <h4 id="store-information-title"><u>All Stores</u></h4>
                 <table id="store-table">
                     <tr>
+                        <th>Store ID</th>
                         <th>Address</th>
                         <th>City</th>
                         <th>State</th>
                         <th>Zip Code</th>
                     </tr>
-                    <tr>
+                    {{#each stores}}
+                        <tr>
+                            <td>{{this.store_id}}</td>
+                            <td>{{this.street_address}}</td>
+                            <td>{{this.city}}</td>
+                            <td>{{this.state}}</td>
+                            <td>{{this.zipcode}}</td>
+                        </tr>
+                    {{/each}}
+                    {{!-- <tr>
+                        <th>1</th>
                         <td>111 Main St</td>
                         <td>Miami</td>
                         <td>FL</td>
                         <td>12345</td>
-                    </tr>
+                    </tr> --}}
                 </table>
                 {{!-- <hr id="table-separator-hr"> --}}
                 <hr id="computer-information-hr">
-                <h4 id="computer-information-title"><u>Computer Information</u></h4>
+                <h4 id="computer-information-title"><u>Computer Inventory (Select store first)</u></h4>
                 <table id="computer-table">
                     <tr>
+                        <th>Comp ID</th>
                         <th>Description</th>
                         <th>RAM</th>
                         <th>Hard Drive</th>
                         <th>Screen Size</th>
                         <th>Quantity</th>
                     </tr>
-                    <tr>
+                    {{!-- <tr>
+                        <td>1</td>
                         <td>Intel</td>
                         <td>32</td>
                         <td>500</td>
                         <td>21</td>
                         <td>20</td>
-                    </tr>
+                    </tr> --}}
                 </table>
             </div>
         </div>    

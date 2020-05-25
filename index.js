@@ -73,10 +73,10 @@ function getInventory(res, db, context, complete) {
 }
 
 function getOrders(res, db, context, complete) {
-  db.query(`SELECT o.order_id, cu.first_name, cu.last_name, co.computer_id, o.quantity FROM orders o 
-INNER JOIN customers cu ON o.order_id = cu.customer_id
-INNER JOIN inventory i ON i.inventory_id = o.order_id
-INNER JOIN computer_systems co ON i.inventory_id = co.computer_id`,
+  db.query(`SELECT o.order_id, cu.first_name, cu.last_name, cu.email, co.computer_id, o.quantity FROM orders o 
+    INNER JOIN customers cu ON cu.customer_id = o.customer_id
+    INNER JOIN inventory i ON i.inventory_id = o.inventory_id
+    INNER JOIN computer_systems co ON co.computer_id = i.computer_id`,
     function (error, results) {
       if(error) {
         res.write(JSON.stringify(error));
@@ -159,7 +159,7 @@ app.get('/allcustomers', function (req, res) {
 
 var getStoreIdList = function() {
   return new Promise((resolve, reject) => {
-    let sqlString = "Select store_id FROM stores";
+    let sqlString = "SELECT store_id, street_address, city, state, zipcode FROM stores";
 
     db.query(
       sqlString,
@@ -189,6 +189,101 @@ app.get('/order', function (req, res) {
     .catch((error) => {
       console.log(error);
       res.render('order');
+    });
+});
+
+var processOrderRequest = function(type, data) {
+  return new Promise((resolve, reject) => {
+    let sqlString = "";
+    let values;
+
+    if (type == "store") {
+      sqlString = "SELECT computer_systems.computer_id, " +
+        "computer_systems.description, " + 
+        "computer_systems.ram, " +
+        "computer_systems.hard_drive, " +
+        "computer_systems.screen_size, " +
+        "inventory.quantity " +
+        "FROM computer_systems " +
+        "INNER JOIN inventory " +
+        "ON inventory.store_id = " + data.store + " and inventory.computer_id = computer_systems.computer_id";
+
+      db.query(
+        sqlString,
+        function(err, result) {
+          if (err) {
+            reject("Error getting computer information for orders page.");
+            return;
+          }
+
+          resolve(result);
+        }
+      );
+    }
+    else if (type == "order") {
+      sqlString = "SELECT customer_id FROM customers WHERE email = ?";
+      values = [data.email];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Could not get customer id for order. Order not placed.");
+            return;
+          }
+
+          customer = result[0].customer_id;
+          sqlString = "Select inventory_id FROM inventory WHERE store_id = ? AND computer_id = ?";
+          values = [data.store, data.computer];
+
+          db.query(
+            sqlString,
+            values,
+            function(err, result) {
+              if (err) {
+                reject("Could not get inventory id for order. Order not placed.");
+                return;
+              }
+
+              inventory = result[0].inventory_id;
+              quant = parseInt(data.quantity);
+              sqlString = "INSERT INTO orders (customer_id, inventory_id, quantity) VALUES (?, ?, ?)";
+              values = [customer, inventory, quant];
+
+              db.query(
+                sqlString,
+                values,
+                function(err, result) {
+                  if (err) {
+                    console.log(err);
+                    reject("Could not insert order into orders. Order not placed.");
+                    return;
+                  }
+
+                  resolve("Order has been successfully placed.");
+                }
+              );
+            }
+          );
+        }
+      );
+    }
+  })
+}
+
+app.post('/order', function(req, res, next) {
+  payload = req.body;
+  type = payload.type;
+  data = payload.data;
+
+  processOrderRequest(type, data)
+    .then((data) => {
+      console.log(data);
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
     });
 });
 
