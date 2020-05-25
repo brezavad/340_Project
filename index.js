@@ -11,6 +11,10 @@ app.set('view engine', 'handlebars');
 app.set('port', 13131);
 app.use(express.static('public'));
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 db.connect(function (err) {
   if (err) {
     console.log(err.message);
@@ -36,7 +40,7 @@ function getCustomers(res, db, context, complete) {
 
 function getStores(res, db, context, complete) {
   db.query(
-    `SELECT  store_id, street_address, city, state, zipcode FROM stores`,
+    `SELECT store_id, street_address, city, state, zipcode FROM stores`,
     function (error, results) {
       if (error) {
         res.write(JSON.stringify(error));
@@ -53,8 +57,8 @@ function getInventory(res, db, context, complete) {
   db.query(
     `SELECT cs.description, cs.ram, cs.screen_size, cs.hard_drive, inv.quantity, 
     s.street_address FROM computer_systems cs 
-    INNER JOIN inventory inv ON cs.computer_id = inv.inventory_id 
-    INNER JOIN stores s ON s.store_id = inv.inventory_id`,
+    INNER JOIN inventory inv ON cs.computer_id = inv.computer_id 
+    INNER JOIN stores s ON s.store_id = inv.store_id`,
     function (error, results) {
       if (error) {
         res.write(JSON.stringify(error));
@@ -90,7 +94,53 @@ app.get('/', function (req, res) {
 });
 
 app.get('/addcustomers', function (req, res) {
-  res.render('addcustomers');
+  let context = {}
+  let scripts = ['js/addCustomers.js', 'js/payloadBuilder.js', 'js/ajax.js'];
+
+  context.scripts = scripts;
+
+  res.render('addcustomers', context);
+});
+
+var processAddCustomersRequest = function(type, data) {
+  return new Promise((resolve, reject) => {
+    let sqlString = "";
+    let values;
+
+    if (type == "add") {
+      sqlString = "INSERT INTO customers " +
+      "(first_name, last_name, email) " +
+      "VALUES (?, ?, ?)";
+      values = [data.firstName, data.lastName, data.email];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Error adding customer info to customers.");
+            return;
+          }
+
+          resolve("Customer added succesfully.");
+        }
+      );
+    }
+  })
+}
+
+app.post('/addcustomers', function(req, res, next) {
+  payload = req.body;
+  type = payload.type;
+  data = payload.data;
+
+  processAddCustomersRequest(type, data)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 
 app.get('/allcustomers', function (req, res) {
@@ -107,8 +157,39 @@ app.get('/allcustomers', function (req, res) {
   }
 });
 
+var getStoreIdList = function() {
+  return new Promise((resolve, reject) => {
+    let sqlString = "Select store_id FROM stores";
+
+    db.query(
+      sqlString,
+      function(err, result) {
+        if (err) {
+          reject("Error getting store id list from stores.");
+          return;
+        }
+
+        resolve(result);
+      }
+    );
+  })
+}
+
 app.get('/order', function (req, res) {
-  res.render('order');
+  context = {};
+  let scripts = ['js/order.js', 'js/payloadBuilder.js', 'js/ajax.js'];
+
+  context.scripts = scripts;
+  
+  getStoreIdList()
+    .then((data) => {
+      context.stores = data;
+      res.render('order', context);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.render('order');
+    });
 });
 
 app.get('/allorders', function (req, res) {
@@ -127,9 +208,12 @@ app.get('/allorders', function (req, res) {
 
 app.get('/inventory', function (req, res) {
   let context = {};
+  let scripts = ['js/inventory.js', 'js/payloadBuilder.js', 'js/ajax.js'];
   let callBackCount = 0;
 
   getInventory(res, db, context, complete);
+
+  context.scripts = scripts;
 
   function complete() {
     callBackCount++;
@@ -139,11 +223,71 @@ app.get('/inventory', function (req, res) {
   }
 });
 
+var processInventoryRequest = function(type, data) {
+  return new Promise((resolve, reject) => {
+    let sqlString = "";
+    let values;
+
+    if (type == "add") {
+      sqlString = "INSERT INTO computer_systems " +
+      "(description, ram, hard_drive, screen_size) " +
+      "VALUES (?, ?, ?, ?)";
+      values = [data.descr, data.ram, data.drive, data.screen];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Error adding computer info to computer_systems.");
+            return;
+          }
+          
+          sqlString = "INSERT INTO inventory " +
+          "(computer_id, store_id, quantity) " +
+          "VALUES (LAST_INSERT_ID(), ?, ?)";
+          values = [data.id, data.quant];
+
+          db.query(
+            sqlString,
+            values,
+            function(err, result) {
+              if (err) {
+                reject("Error adding inventory info to inventory.")
+                return;
+              }
+
+              resolve("Inventory added succesfully.");
+            }
+          );
+        }
+      );
+    }
+  })
+}
+
+app.post('/inventory', function(req, res, next) {
+  payload = req.body;
+  type = payload.type;
+  data = payload.data;
+
+  processInventoryRequest(type, data)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 app.get('/stores', function (req, res) {
   let context = {};
+  let scripts = ['js/stores.js', 'js/payloadBuilder.js', 'js/ajax.js'];
   let callBackCount = 0;
 
   getStores(res, db, context, complete);
+
+  context.scripts = scripts;
 
   function complete() {
     callBackCount++;
@@ -151,6 +295,47 @@ app.get('/stores', function (req, res) {
       res.render('stores', context);
     }
   }
+});
+
+var processStoresRequest = function(type, data) {
+  return new Promise((resolve, reject) => {
+    let sqlString = "";
+    let values;
+
+    if (type == "add") {
+      sqlString = "INSERT INTO stores " +
+      "(street_address, city, state, zipcode) " +
+      "VALUES (?, ?, ?, ?)";
+      values = [data.address, data.city, data.state, data.zip];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Error adding store info to stores.");
+            return;
+          }
+
+          resolve("Store added succesfully.");
+        }
+      );
+    }
+  })
+}
+
+app.post('/stores', function(req, res, next) {
+  payload = req.body;
+  type = payload.type;
+  data = payload.data;
+
+  processStoresRequest(type, data)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 
 app.use(function (req, res) {

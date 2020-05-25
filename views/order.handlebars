@@ -12,11 +12,18 @@
                 </div>
                 <div class="form-group">
                     <label for="store-info">Store: </label>
-                    <select id="store-info"></select>
+                    <select id="store-info">
+                        <option value=""></option>
+                        {{#each stores}}
+                            <option value="{{this.store_id}}">{{this.store_id}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="computer-info">Computer: </label>
-                    <select id="computer-info"></select>
+                    <select id="computer-info">
+                        <option value=""></option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="quantity">Quantity </label>

@@ -2,6 +2,14 @@
   color: white;
 }
 
+select {
+  color: black;
+}
+
+option {
+  color: black;
+}
+
 hr {
   border-color: white;
 }
