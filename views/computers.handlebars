@@ -1,0 +1,58 @@
+<div id="inner-webpage-content-inventory">
+    <form>
+        <div class="form-group">
+            {{!-- <label for="computer-id">Computer Id</label> --}}
+            <input type="hidden" class="form-control" id="computer-id">
+        </div>
+        <div class="form-group">
+            <label for="computer-description">Computer Description</label>
+            <input type="text" class="form-control" id="computer-description"
+                placeholder="Enter description of computer">
+        </div>
+        <div class="form-group">
+            <label for="computer-ram">Computer's RAM</label>
+            <input type="number" class="form-control" id="computer-ram" placeholder="Enter amount of ram in computer">
+        </div>
+        <div class="form-group">
+            <label for="computer-hard_drive">Computer's Hard Drive</label>
+            <input type="number" class="form-control" id="computer-hard-drive"
+                placeholder="Enter amount of hard drive on computer">
+        </div>
+        <div class="form-group">
+            <label for="computer-screen_size">Computer's Screen Size</label>
+            <input type="number" class="form-control" id="computer-screen-size"
+                placeholder="Enter size of computer's screen">
+        </div>
+        <button type="submit" id="submit-computer" class="btn btn-primary">Insert into computer_systems</button>
+    </form>
+
+    <div class="container">
+        <h2>Computer Systems</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Computer ID</th>
+                    <th>Computer Description</th>
+                    <th>Computer Ram</th>
+                    <th>Hard Drive</th>
+                    <th>Computer Screen Size</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each computers}}
+                <tr>
+                    <td>{{this.computer_id}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.ram}}</td>
+                    <td>{{this.hard_drive}}</td>
+                    <td>{{this.screen_size}}</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

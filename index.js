@@ -8,7 +8,7 @@ const db = require('./db/dbConfig');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('port', 13131);
+app.set('port', 13133);
 app.use(express.static('public'));
 
 var bodyParser = require('body-parser');
@@ -55,10 +55,11 @@ function getStores(res, db, context, complete) {
 
 function getInventory(res, db, context, complete) {
   db.query(
-    `SELECT cs.description, cs.ram, cs.screen_size, cs.hard_drive, inv.quantity, 
-    s.street_address FROM computer_systems cs 
+    `SELECT s.store_id, s.street_address, cs.computer_id, cs.description, inv.inventory_id, inv.quantity 
+    FROM computer_systems cs 
     INNER JOIN inventory inv ON cs.computer_id = inv.computer_id 
-    INNER JOIN stores s ON s.store_id = inv.store_id`,
+    INNER JOIN stores s ON s.store_id = inv.store_id
+    ORDER BY s.store_id`,
     function (error, results) {
       if (error) {
         res.write(JSON.stringify(error));
@@ -323,38 +324,22 @@ var processInventoryRequest = function(type, data) {
     let sqlString = "";
     let values;
 
-    if (type == "add") {
-      sqlString = "INSERT INTO computer_systems " +
-      "(description, ram, hard_drive, screen_size) " +
-      "VALUES (?, ?, ?, ?)";
-      values = [data.descr, data.ram, data.drive, data.screen];
+    if (type == "add") { 
+      sqlString = "INSERT INTO inventory " +
+      "(computer_id, store_id, quantity) " +
+      "VALUES (?, ?, ?)";
+      values = [data.computer_id, data.store_id, data.quant];
 
       db.query(
         sqlString,
         values,
         function(err, result) {
           if (err) {
-            reject("Error adding computer info to computer_systems.");
+            reject("Error adding inventory info to inventory.")
             return;
           }
-          
-          sqlString = "INSERT INTO inventory " +
-          "(computer_id, store_id, quantity) " +
-          "VALUES (LAST_INSERT_ID(), ?, ?)";
-          values = [data.id, data.quant];
 
-          db.query(
-            sqlString,
-            values,
-            function(err, result) {
-              if (err) {
-                reject("Error adding inventory info to inventory.")
-                return;
-              }
-
-              resolve("Inventory added succesfully.");
-            }
-          );
+          resolve("Inventory added succesfully.");
         }
       );
     }
@@ -425,6 +410,84 @@ app.post('/stores', function(req, res, next) {
   data = payload.data;
 
   processStoresRequest(type, data)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
+var getComputers = function() {
+  return new Promise((resolve, reject) => {
+    let sqlString = "";
+    let values;
+
+    sqlString = "SELECT computer_id, description, ram, hard_drive, screen_size FROM computer_systems"
+
+    db.query(
+      sqlString,
+      function(err, result) {
+        if (err) {
+          reject("Error getting computer information from computer_systems");
+          return;
+        }
+
+        resolve(result);
+      }
+    );
+  })
+}
+
+app.get('/computers', function (req, res) {
+  let context = {};
+  let scripts = ['js/computers.js', 'js/payloadBuilder.js', 'js/ajax.js'];
+  context.scripts = scripts;
+
+  getComputers()
+    .then((data) => {
+      context.computers = data;
+      res.render('computers', context);
+    })
+    .catch((error) => {
+      res.render('computers', context);
+    });
+
+});
+
+var processComputersRequest = function(type, data) {
+  return new Promise((resolve, reject) => {
+    let sqlString = "";
+    let values;
+
+    if (type == "add") {
+      sqlString = "INSERT INTO computer_systems " +
+      "(description, ram, hard_drive, screen_size) " +
+      "VALUES (?, ?, ?, ?)";
+      values = [data.descr, data.ram, data.drive, data.screen];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Error adding computer info to computer_systems.");
+            return;
+          }
+
+          resolve("Computer added to computer_systems successfully.");
+        }
+      );
+    }
+  })
+}
+
+app.post('/computers', function(req, res, next) {
+  payload = req.body;
+  type = payload.type;
+  data = payload.data;
+
+  processComputersRequest(type, data)
     .then((data) => {
       res.status(200).send(data);
     })

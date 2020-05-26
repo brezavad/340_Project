@@ -4,8 +4,11 @@
             <label for="store-id">Store Id</label>
             <input type="text" class="form-control" id="store-id" placeholder="Enter Store Id">
         </div>
-
         <div class="form-group">
+            <label for="computer-id">Computer Id</label>
+            <input type="text" class="form-control" id="computer-id" placeholder="Enter Computer Id">
+        </div>
+        {{!-- <div class="form-group">
             <label for="computer-description">Computer Description</label>
             <input type="text" class="form-control" id="computer-description"
                 placeholder="Enter description of computer">
@@ -23,26 +26,26 @@
             <label for="computer-screen_size">Computer's Screen Size</label>
             <input type="number" class="form-control" id="computer-screen-size"
                 placeholder="Enter size of computer's screen">
-        </div>
+        </div> --}}
         <div class="form-group">
             <label for="computer-quantity">Quantity</label>
             <input type="number" class="form-control" id="computer-quantity" placeholder="Enter number of computers"
                 value=0>
         </div>
-        <button type="submit" id="submit-inventory" class="btn btn-primary">Submit</button>
+        <button type="submit" id="submit-inventory" class="btn btn-primary">Insert into inventory</button>
     </form>
 
     <div class="container">
-        <h2>Store Inventory</h2>
+        <h2>Inventory</h2>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Computer Description</th>
-                    <th>Computer Ram</th>
-                    <th>Hard Drive</th>
-                    <th>Computer Screen Size</th>
-                    <th>Quantity</th>
+                    <th>Store Id</th>
                     <th>Store Address</th>
+                    <th>Computer Id</th>
+                    <th>Computer Description</th>
+                    <th>Inventory Id</th>
+                    <th>Quantity</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -50,12 +53,12 @@
             <tbody>
                 {{#each inventory}}
                 <tr>
-                    <td>{{description}}</td>
-                    <td>{{ram}}</td>
-                    <td>{{hard_drive}}</td>
-                    <td>{{screen_size}}</td>
-                    <td>{{quantity}}</td>
-                    <td>{{street_address}}</td>
+                    <td>{{this.store_id}}</td>
+                    <td>{{this.street_address}}</td>
+                    <td>{{this.computer_id}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.inventory_id}}</td>
+                    <td>{{this.quantity}}</td>
                     <td>Edit</td>
                     <td>Delete</td>
                 </tr>

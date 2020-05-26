@@ -55,18 +55,12 @@ function processStoresPage(type) {
 
 function addInventory() {
     let data = {};
-    let id = getId("store-id");
-    let descr = getId("computer-description");
-    let ram = getId("computer-ram");
-    let drive = getId("computer-hard-drive");
-    let screen = getId("computer-screen-size");
+    let store_id = getId("store-id");
+    let computer_id = getId("computer-id");
     let quant = getId("computer-quantity");
 
-    data.id = id.value;
-    data.descr = descr.value;
-    data.ram = ram.value;
-    data.drive = drive.value;
-    data.screen = screen.value;
+    data.store_id = store_id.value;
+    data.computer_id = computer_id.value;
     data.quant = quant.value;
 
     return data;
@@ -113,6 +107,27 @@ function processOrderPage(type) {
     }
 }
 
+function addComputer() {
+    let data = {};
+    let descr = getId("computer-description");
+    let ram = getId("computer-ram");
+    let drive = getId("computer-hard-drive");
+    let screen = getId("computer-screen-size");
+
+    data.descr = descr.value;
+    data.ram = ram.value;
+    data.drive = drive.value;
+    data.screen = screen.value;
+
+    return data;
+}
+
+function processComputersPage(type) {
+    if (type == "add") {
+        return addComputer();
+    }
+}
+
 function payloadBuilder(page, type) {
     let payload = {};
     payload.page = page;
@@ -130,6 +145,9 @@ function payloadBuilder(page, type) {
     }
     else if (page == 'order') {
         payload.data = processOrderPage(type);
+    }
+    else if (page == 'computers') {
+        payload.data = processComputersPage(type);
     }
 
     return payload;
