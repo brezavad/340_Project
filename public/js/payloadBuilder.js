@@ -5,8 +5,12 @@ function getId(name) {
 }
 
 function searchCustomers() {
+    let data = {};
     let element = getId("existing-email");
-    return element.innerText;
+
+    data.email = element.value;
+
+    return data;
 }
 
 function addCustomer() {
@@ -22,9 +26,24 @@ function addCustomer() {
     return data;
 }
 
+function updateCustomer() {
+    let customerId = getId("customer-id");
+    data = addCustomer();
+
+    data.customerId = customerId.value;
+
+    return data;
+}
+
 function processAddCustomersPage(type) {
     if (type == "add") {
         return addCustomer();
+    }
+    else if (type == "search") {
+        return searchCustomers();
+    }
+    else if (type == "update") {
+        return updateCustomer();
     }
 
     return null;
@@ -66,9 +85,21 @@ function addInventory() {
     return data;
 }
 
+function updateInventory() {
+    let i_id = getId("inventory-id");
+    let data = addInventory();
+
+    data.inventory_id = i_id.value;
+
+    return data;
+}
+
 function processInventoryPage(type) {
     if (type == "add") {
         return addInventory();
+    }
+    else if (type == "update") {
+        return updateInventory();
     }
 
     return null;

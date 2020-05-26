@@ -74,10 +74,12 @@ function getInventory(res, db, context, complete) {
 }
 
 function getOrders(res, db, context, complete) {
-  db.query(`SELECT o.order_id, cu.first_name, cu.last_name, cu.email, co.computer_id, o.quantity FROM orders o 
+  db.query(`SELECT o.order_id, cu.first_name, cu.last_name, cu.email, co.computer_id, o.quantity, s.store_id FROM orders o 
     INNER JOIN customers cu ON cu.customer_id = o.customer_id
     INNER JOIN inventory i ON i.inventory_id = o.inventory_id
-    INNER JOIN computer_systems co ON co.computer_id = i.computer_id`,
+    INNER JOIN stores s on s.store_id = i.store_id
+    INNER JOIN computer_systems co ON co.computer_id = i.computer_id
+    ORDER BY o.order_id`,
     function (error, results) {
       if(error) {
         res.write(JSON.stringify(error));
@@ -127,6 +129,45 @@ var processAddCustomersRequest = function(type, data) {
         }
       );
     }
+    else if (type == "search") {
+      sqlString = "SELECT customer_id, first_name, last_name, email " +
+        "FROM customers WHERE email = ?";
+      values = [data.email];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            console.log(err);
+            reject("Error searching customer info in customers.");
+            return;
+          }
+
+          resolve(result);
+        }
+      );
+    }
+    else if (type == "update") {
+      sqlString = "UPDATE customers " +
+        "SET first_name = ?, last_name = ?, email = ? " +
+        "WHERE customer_id = ?";
+      values = [data.firstName, data.lastName, data.email, data.customerId];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            console.log(err);
+            reject("Error updating customer info in customers.");
+            return;
+          }
+
+          resolve("Customer information has been updated.");
+        }
+      );
+    }
   })
 }
 
@@ -146,6 +187,8 @@ app.post('/addcustomers', function(req, res, next) {
 
 app.get('/allcustomers', function (req, res) {
   let context = {};
+  let scripts = ['js/allCustomers.js', 'js/payloadBuilder.js', 'js/ajax.js'];
+  context.scripts = scripts;
   let callBackCount = 0;
 
   getCustomers(res, db, context, complete);
@@ -156,6 +199,49 @@ app.get('/allcustomers', function (req, res) {
       res.render('allcustomers', context);
     }
   }
+});
+
+var processAllCustomersRequest = function(type, data) {
+  return new Promise((resolve, reject) => {
+    let sqlString = "";
+    let values;
+
+    if (type == "delete") {
+      sqlString = "DELETE FROM customers " +
+      "WHERE customer_id = ?";
+      values = [data.customerId];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Error deleting customer info to customers.");
+            return;
+          }
+
+          resolve("Customer deleted succesfully.");
+        }
+      );
+    }
+    else {
+      reject("No processing type given for all customers page.");
+    }
+  })
+}
+
+app.post('/allcustomers', function(req, res, next) {
+  payload = req.body;
+  type = payload.type;
+  data = payload.data;
+
+  processAllCustomersRequest(type, data)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 
 var getStoreIdList = function() {
@@ -192,6 +278,65 @@ app.get('/order', function (req, res) {
       res.render('order');
     });
 });
+
+var updateInventory = function(inventory, quant) {
+  return new Promise((resolve, reject) => {
+    let sqlString = "SELECT quantity FROM inventory WHERE inventory_id = ?";
+    values = [inventory];
+
+    db.query(
+      sqlString,
+      values,
+      function(err, result) {
+        if (err) {
+          reject("Inventory failed to update (could not get quantity).");
+          return;
+        }
+
+        let newQuant = parseInt(result[0].quantity) - quant;
+
+        sqlString = "UPDATE inventory " +
+          "SET quantity = ? " +
+          "WHERE inventory_id = ?"
+        values = [newQuant, inventory];
+
+        db.query(
+          sqlString,
+          values,
+          function(err, result) {
+            if (err) {
+              reject("Inventory failed to update (could not set quantity).");
+              return;
+            }
+
+            resolve("Inventory updated successfully.");
+          }
+        );
+      }
+    );
+  })
+}
+
+// var getOrderCustomer = function(data) {
+//   return new Promise((resolve, reject) => {
+//     sqlString = "SELECT customer_id FROM customers WHERE email = ?";
+//     values = [data.email];
+
+//     db.query(
+//       sqlString,
+//       values,
+//       function(err, result) {
+//         if (err) {
+//           reject("Could not get customer id for order.");
+//           return;
+//         }
+
+//         customerId = result[0].customer_id;
+//         resolve(customerId);
+//       }
+//     );
+//   });
+// }
 
 var processOrderRequest = function(type, data) {
   return new Promise((resolve, reject) => {
@@ -262,7 +407,13 @@ var processOrderRequest = function(type, data) {
                     return;
                   }
 
-                  resolve("Order has been successfully placed.");
+                  updateInventory(inventory, quant)
+                  .then((data) => {
+                    resolve("Order has been placed. " + data);
+                  })
+                  .catch((error) => {
+                    reject("Order has been placed. " + error);
+                  });
                 }
               );
             }
@@ -340,6 +491,44 @@ var processInventoryRequest = function(type, data) {
           }
 
           resolve("Inventory added succesfully.");
+        }
+      );
+    }
+    else if (type == "update") {
+      sqlString = "UPDATE inventory " +
+      "SET computer_id = ?, store_id = ?, quantity = ? " +
+      "WHERE inventory_id = ?";
+      values = [data.computer_id, data.store_id, data.quant, data.inventory_id];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Error updating inventory info to inventory.")
+            return;
+          }
+
+          resolve("Inventory updated succesfully.");
+        }
+      );
+    }
+    else if (type == "delete") {
+      sqlString = "DELETE FROM inventory " +
+        "WHERE inventory_id = ?";
+      values = [data.inventoryId];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            console.log(err);
+            reject("Error deleting inventory info in inventory.")
+            return;
+          }
+
+          resolve("Inventory deleted succesfully.");
         }
       );
     }

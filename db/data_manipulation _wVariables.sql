@@ -10,6 +10,8 @@ UPDATE customers SET first_name = :userInputFirstName, last_name = userInputLast
 -- start all customer page queries
 -- Select all customers
 SELECT customer_id, first_name, last_name, email FROM customers;
+-- Delete customer
+DELETE FROM customers WHERE customer_id = :userInputCustomerId;
 -- end all customer page queries
 
 -- start order page queries

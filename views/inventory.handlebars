@@ -1,6 +1,10 @@
 <div id="inner-webpage-content-inventory">
     <form>
         <div class="form-group">
+            {{!-- <label for="computer-id">Computer Id</label> --}}
+            <input type="hidden" class="form-control" id="inventory-id">
+        </div>
+        <div class="form-group">
             <label for="store-id">Store Id</label>
             <input type="text" class="form-control" id="store-id" placeholder="Enter Store Id">
         </div>
@@ -33,19 +37,20 @@
                 value=0>
         </div>
         <button type="submit" id="submit-inventory" class="btn btn-primary">Insert into inventory</button>
+        <button type="submit" id="update-inventory" class="btn btn-primary">Update inventory</button>
     </form>
 
     <div class="container">
         <h2>Inventory</h2>
-        <table class="table">
+        <table class="table" id="inventory-table">
             <thead>
                 <tr>
+                    <th>Inventory Id</th>
+                    <th>Quantity</th>
                     <th>Store Id</th>
                     <th>Store Address</th>
                     <th>Computer Id</th>
                     <th>Computer Description</th>
-                    <th>Inventory Id</th>
-                    <th>Quantity</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -53,14 +58,14 @@
             <tbody>
                 {{#each inventory}}
                 <tr>
+                    <td>{{this.inventory_id}}</td>
+                    <td>{{this.quantity}}</td>
                     <td>{{this.store_id}}</td>
                     <td>{{this.street_address}}</td>
                     <td>{{this.computer_id}}</td>
                     <td>{{this.description}}</td>
-                    <td>{{this.inventory_id}}</td>
-                    <td>{{this.quantity}}</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
+                    <td><button type="submit" class="btn btn-primary editInventoryBtn">Edit</button></td>
+                    <td><button type="submit" class="btn btn-primary deleteInventoryBtn">Delete</button></td>
                 </tr>
                 {{/each}}
             </tbody>
