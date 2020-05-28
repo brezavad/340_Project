@@ -8,7 +8,7 @@ const db = require('./db/dbConfig');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('port', 13133);
+app.set('port', 33133);
 app.use(express.static('public'));
 
 var bodyParser = require('body-parser');
@@ -74,12 +74,14 @@ function getInventory(res, db, context, complete) {
 }
 
 function getOrders(res, db, context, complete) {
-  db.query(`SELECT o.order_id, cu.first_name, cu.last_name, cu.email, co.computer_id, o.quantity, s.store_id FROM orders o 
-    INNER JOIN customers cu ON cu.customer_id = o.customer_id
-    INNER JOIN inventory i ON i.inventory_id = o.inventory_id
-    INNER JOIN stores s on s.store_id = i.store_id
-    INNER JOIN computer_systems co ON co.computer_id = i.computer_id
-    ORDER BY o.order_id`,
+  db.query(
+    // `SELECT o.order_id, cu.first_name, cu.last_name, cu.email, co.computer_id, o.quantity, s.store_id FROM orders o 
+    // INNER JOIN customers cu ON cu.customer_id = o.customer_id
+    // INNER JOIN inventory i ON i.inventory_id = o.inventory_id
+    // INNER JOIN stores s on s.store_id = i.store_id
+    // INNER JOIN computer_systems co ON co.computer_id = i.computer_id
+    // ORDER BY o.order_id`,
+    `SELECT order_id, customer_id, inventory_id, quantity FROM orders ORDER BY order_id`,
     function (error, results) {
       if(error) {
         res.write(JSON.stringify(error));
@@ -586,7 +588,7 @@ var processStoresRequest = function(type, data) {
             return;
           }
 
-          resolve("Store added succesfully.");
+          resolve("Store added succesfully to stores.");
         }
       );
     }
@@ -665,6 +667,24 @@ var processComputersRequest = function(type, data) {
           }
 
           resolve("Computer added to computer_systems successfully.");
+        }
+      );
+    }
+    if (type == "delete") {
+      sqlString = "DELETE FROM computer_systems " +
+      "WHERE computer_id = ?";
+      values = [data.computerId];
+
+      db.query(
+        sqlString,
+        values,
+        function(err, result) {
+          if (err) {
+            reject("Error deleting computer from computer_system");
+            return;
+          }
+
+          resolve("Computer has been deleted successfully. Inventory rows will be deleted due to cascade. Corresponding rows in orders will be set to null.");
         }
       );
     }

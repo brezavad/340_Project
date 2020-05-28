@@ -85,7 +85,7 @@ VALUES (1, 3, 5),
 
 ALTER TABLE orders ADD FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE SET NULL;
 ALTER TABLE orders ADD FOREIGN KEY(inventory_id) REFERENCES inventory(inventory_id) ON DELETE SET NULL;
-ALTER TABLE inventory ADD FOREIGN KEY(computer_id) REFERENCES computer_systems(computer_id);
+ALTER TABLE inventory ADD FOREIGN KEY(computer_id) REFERENCES computer_systems(computer_id) ON DELETE CASCADE;
 ALTER TABLE inventory ADD FOREIGN KEY(store_id) REFERENCES stores(store_id);
 
 SET FOREIGN_KEY_CHECKS=1;

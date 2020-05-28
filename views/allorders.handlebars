@@ -4,24 +4,32 @@
         <table class="table" id="all-order-table">
             <thead>
                 <tr>
-                <th>Order Number</th>
-                <th>Customer Name</th>
-                <th>Email</th>
-                <th>Computer ID</th>
-                <th>Store ID</th>
-                <th>Quantity</th>
+                    {{!-- <th>Order Number</th>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Computer ID</th>
+                    <th>Store ID</th>
+                    <th>Quantity</th> --}}
+                    <th>Order ID</th>
+                    <th>Customer ID (Blank = NULL)</th>
+                    <th>Inventory ID (Blank = NULL)</th>
+                    <th>Quantity</th>
                 </tr>
             </thead>
             <tbody>
                 {{#each orders}}
-                <tr>
-                <td>{{order_id}}</td>
-                <td>{{first_name}} {{last_name}}</td>
-                <td>{{email}}</td>
-                <td>{{computer_id}}</td>
-                <td>{{store_id}}</td>
-                <td>{{quantity}}</td>
-                </tr>
+                    <tr>
+                        {{!-- <td>{{order_id}}</td>
+                        <td>{{first_name}} {{last_name}}</td>
+                        <td>{{email}}</td>
+                        <td>{{computer_id}}</td>
+                        <td>{{store_id}}</td>
+                        <td>{{quantity}}</td> --}}
+                        <td>{{this.order_id}}</td>
+                        <td>{{this.customer_id}}</td>
+                        <td>{{this.inventory_id}}</td>
+                        <td>{{this.quantity}}</td>
+                    </tr>
                 {{/each}}
             </tbody>
         </table>

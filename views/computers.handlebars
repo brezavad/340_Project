@@ -28,7 +28,7 @@
 
     <div class="container">
         <h2>Computer Systems</h2>
-        <table class="table">
+        <table id="computer-table" class="table">
             <thead>
                 <tr>
                     <th>Computer ID</th>
@@ -36,6 +36,7 @@
                     <th>Computer Ram</th>
                     <th>Hard Drive</th>
                     <th>Computer Screen Size</th>
+                    <th>Delete</th>
                     {{!-- <th>Edit</th>
                     <th>Delete</th> --}}
                 </tr>
@@ -48,6 +49,7 @@
                     <td>{{this.ram}}</td>
                     <td>{{this.hard_drive}}</td>
                     <td>{{this.screen_size}}</td>
+                    <td><button type="submit" class="btn btn-primary deleteComputerBtn">Delete</button></td>
                     {{!-- <td>Edit</td>
                     <td>Delete</td> --}}
                 </tr>

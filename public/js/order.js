@@ -98,6 +98,7 @@ function placeOrder(event) {
   sendPostAjax(payload, page)
     .then((responseData) => {
       alert(responseData);
+      window.location.href = "./" + page;
     });
 
   event.preventDefault();

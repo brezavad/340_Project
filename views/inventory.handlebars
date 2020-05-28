@@ -52,7 +52,7 @@
                     <th>Computer Id</th>
                     <th>Computer Description</th>
                     <th>Edit</th>
-                    <th>Delete</th>
+                    {{!-- <th>Delete</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -65,7 +65,7 @@
                     <td>{{this.computer_id}}</td>
                     <td>{{this.description}}</td>
                     <td><button type="submit" class="btn btn-primary editInventoryBtn">Edit</button></td>
-                    <td><button type="submit" class="btn btn-primary deleteInventoryBtn">Delete</button></td>
+                    {{!-- <td><button type="submit" class="btn btn-primary deleteInventoryBtn">Delete</button></td> --}}
                 </tr>
                 {{/each}}
             </tbody>
