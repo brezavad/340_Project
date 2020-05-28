@@ -5,12 +5,28 @@
             <input type="hidden" class="form-control" id="inventory-id">
         </div>
         <div class="form-group">
-            <label for="store-id">Store Id</label>
-            <input type="text" class="form-control" id="store-id" placeholder="Enter Store Id">
+            <label for="store-id">Store: </label>
+            {{!-- <input type="text" class="form-control" id="store-id" placeholder="Enter Store Id"> --}}
+            <select id="store-id">
+                <option value=""></option>
+                {{#each stores}}
+                    <tr>
+                        <option value="{{this.store_id}}">{{this.store_id}}. {{this.street_address}} {{this.city}}, {{this.state}} {{this.zipcode}}</option>
+                    </tr>
+                {{/each}}
+            </select>
         </div>
         <div class="form-group">
-            <label for="computer-id">Computer Id</label>
-            <input type="text" class="form-control" id="computer-id" placeholder="Enter Computer Id">
+            <label for="computer-id">Computer: </label>
+            <select id="computer-id">
+                <option value=""></option>
+                {{#each computers}}
+                    <tr>
+                        <option value="{{this.computer_id}}">{{this.computer_id}}. {{this.description}}</option>
+                    </tr>
+                {{/each}}
+            </select>
+            {{!-- <input type="text" class="form-control" id="computer-id" placeholder="Enter Computer Id"> --}}
         </div>
         {{!-- <div class="form-group">
             <label for="computer-description">Computer Description</label>

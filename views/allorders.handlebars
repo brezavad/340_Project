@@ -11,8 +11,8 @@
                     <th>Store ID</th>
                     <th>Quantity</th> --}}
                     <th>Order ID</th>
-                    <th>Customer ID (Blank = NULL)</th>
-                    <th>Inventory ID (Blank = NULL)</th>
+                    <th>Customer ID</th>
+                    <th>Inventory ID</th>
                     <th>Quantity</th>
                 </tr>
             </thead>
@@ -26,8 +26,10 @@
                         <td>{{store_id}}</td>
                         <td>{{quantity}}</td> --}}
                         <td>{{this.order_id}}</td>
-                        <td>{{this.customer_id}}</td>
-                        <td>{{this.inventory_id}}</td>
+                        {{!-- <td>{{this.customer_id}}</td> --}}
+                        {{#if this.customer_id}}<td>{{this.customer_id}}</td>{{else}}<td>NULL</td>{{/if}}
+                        {{!-- <td>{{this.inventory_id}}</td> --}}
+                        {{#if this.inventory_id}}<td>{{this.inventory_id}}</td>{{else}}<td>NULL</td>{{/if}}
                         <td>{{this.quantity}}</td>
                     </tr>
                 {{/each}}
