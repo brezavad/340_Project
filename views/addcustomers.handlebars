@@ -10,7 +10,7 @@
                     <label for="existing-email">Enter Email: </label>
                     <input type="text" class="form-control" id="existing-email" placeholder="Enter you email...">
                 </div>
-                <button type="submit" id="search-customers" form="existing-customer">Search For Customer Info</button>
+                <button type="submit" class="btn btn-primary" id="search-customers" form="existing-customer">Search For Customer Info</button>
             </form>
         </div>
         <div id="customer-information">
@@ -33,8 +33,12 @@
                     <label for="email">Email: </label>
                     <input type="text" class="form-control" id="email" placeholder="Enter your email...">
                 </div>
-                <button type="submit" id="add-customers" form="add-customer">Add Customer Info</button>
-                <button type="submit" id="update-customer" form="update-customer">Update Customer Info</button>
+                <button type="submit" class="btn btn-primary" id="add-customers" form="add-customer">Insert into customers</button>
+                <p>*To update customer information, first search for <br />
+                    the customer by email. If the customer is found, <br />
+                    then you can update their information.
+                </p>
+                {{!-- <button type="submit" class="btn btn-primary" id="update-customer" form="update-customer">Update Customer Info</button> --}}
             </form>
         </div>
     </div>

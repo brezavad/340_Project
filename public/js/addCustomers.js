@@ -5,19 +5,39 @@ const add = "add-customers";
 const search = "search-customers";
 const update = "update-customer";
 
-const addButton = document.getElementById(add);
-const searchButton = document.getElementById(search);
-const updateButton = document.getElementById(update);
+const submitLabel = "Insert into customers";
+const updateLabel = "Update customer info";
 
-function addCustomers(event) {
+let submitButton = document.getElementById(add);
+let searchButton = document.getElementById(search);
+// let updateButton = document.getElementById(update);
+
+submitButton.value = submitLabel;
+submitButton.innerText = submitLabel;
+
+// function addCustomers(event) {
+//   let payload = payloadBuilder(page, 'add');
+  
+//   sendPostAjax(payload, page)
+//     .then((responseData) => {
+//       alert(responseData);
+//     });
+
+//   event.preventDefault();
+// }
+
+function reloadWindow() {
+  window.location.href = "./" + page;
+}
+
+function pageCustomersAdd() {
   let payload = payloadBuilder(page, 'add');
   
   sendPostAjax(payload, page)
     .then((responseData) => {
       alert(responseData);
+      reloadWindow();
     });
-
-  event.preventDefault();
 }
 
 function fillCustomerForm(data) {
@@ -44,6 +64,7 @@ function searchCustomers(event) {
       if (data.length > 0) {
         fillCustomerForm(data);
         alert("Customer found.");
+        changeButtonValue(updateLabel);
       }
       else {
         alert("Customer not found.");
@@ -53,18 +74,46 @@ function searchCustomers(event) {
   event.preventDefault();
 }
 
-function updateCustomer(event) {
+// function updateCustomer(event) {
+//   let payload = payloadBuilder(page, 'update');
+//   console.log(payload);
+  
+//   sendPostAjax(payload, page)
+//     .then((responseData) => {
+//       alert(responseData);
+//     });
+
+//   event.preventDefault();
+// }
+
+function pageCustomersUpdate() {
   let payload = payloadBuilder(page, 'update');
   console.log(payload);
   
   sendPostAjax(payload, page)
     .then((responseData) => {
       alert(responseData);
+      reloadWindow();
     });
+}
+
+function changeButtonValue(value) {
+  submitButton.value = value;
+  submitButton.innerText = value;
+}
+
+function submitClick(event) {
+  if (submitButton.value == submitLabel) {
+    pageCustomersAdd();
+  }
+  else if (submitButton.value == updateLabel) {
+    pageCustomersUpdate();
+    changeButtonValue(submitLabel);
+  }
 
   event.preventDefault();
 }
 
-addButton.addEventListener('click', addCustomers);
+submitButton.addEventListener('click', submitClick);
 searchButton.addEventListener('click', searchCustomers);
-updateButton.addEventListener('click', updateCustomer);
+// updateButton.addEventListener('click', updateCustomer);

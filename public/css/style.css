@@ -2,6 +2,11 @@
   color: white;
 }
 
+.input-form {
+  width: 500px;
+  margin: auto;
+}
+
 select {
   color: black;
 }
@@ -139,7 +144,7 @@ nav {
   margin-bottom: 10px;
 }
 
-#inner-webpage-content-order button {
+/* #inner-webpage-content-order button {
   color: black;
 }
 
@@ -149,7 +154,7 @@ nav {
 
 #customer-order button {
   color: black;
-}
+} */
 
 #add-customer-hr {
   width: 45%;

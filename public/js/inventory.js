@@ -4,12 +4,32 @@ const page = "inventory";
 const submit = "submit-inventory";
 const update = "update-inventory";
 const table = "inventory-table";
+const submitLabel = "Insert into inventory";
+const updateLabel = "Update inventory";
 
-const submitButton = document.getElementById(submit);
-const tableElement = document.getElementById(table);
-const updateButton = document.getElementById(update);
+let submitButton = document.getElementById(submit);
+let tableElement = document.getElementById(table);
+// let updateButton = document.getElementById(update);
 
-function addInventory(event) {
+submitButton.value = submitLabel;
+submitButton.innerText = submitLabel;
+
+// function addInventory(event) {
+//   let payload = payloadBuilder(page, 'add');
+
+//   console.log(payload);
+  
+//   sendPostAjax(payload, page)
+//     .then((responseData) => {
+//       alert(responseData);
+//       window.location.href = "./" + page;
+//     });
+
+//   event.preventDefault();
+// }
+
+function pageInventoryAdd() {
+  console.log("this is working");
   let payload = payloadBuilder(page, 'add');
 
   console.log(payload);
@@ -19,11 +39,23 @@ function addInventory(event) {
       alert(responseData);
       window.location.href = "./" + page;
     });
-
-  event.preventDefault();
 }
 
-function updateInventory(event) {
+// function updateInventory(event) {
+//   let payload = payloadBuilder(page, 'update');
+
+//   console.log(payload);
+  
+//   sendPostAjax(payload, page)
+//     .then((responseData) => {
+//       alert(responseData);
+//       window.location.href = "./" + page;
+//     });
+
+//   event.preventDefault();
+// }
+
+function pageInventoryUpdate() {
   let payload = payloadBuilder(page, 'update');
 
   console.log(payload);
@@ -33,8 +65,6 @@ function updateInventory(event) {
       alert(responseData);
       window.location.href = "./" + page;
     });
-
-  event.preventDefault();
 }
 
 function deleteInventory(inventoryId) {
@@ -84,6 +114,7 @@ function tableClick(event) {
 
   if (target.classList.contains('editInventoryBtn')) {
     fillInventoryTable(target);
+    changeButtonValue(updateLabel);
   }
   else if (target.classList.contains('deleteInventoryBtn')) {
     let inventoryId = getInventoryId(target);
@@ -94,6 +125,24 @@ function tableClick(event) {
   event.stopPropagation();
 }
 
-submitButton.addEventListener('click', addInventory);
+function changeButtonValue(value) {
+  submitButton.value = value;
+  submitButton.innerText = value;
+}
+
+function submitClick(event) {
+  if (submitButton.value == submitLabel) {
+    pageInventoryAdd();
+    console.log(submitButton.value + " 2");
+  }
+  else if (submitButton.value == updateLabel) {
+    pageInventoryUpdate();
+    changeButtonValue(submitLabel);
+  }
+
+  event.preventDefault();
+}
+
+submitButton.addEventListener('click', submitClick);
 tableElement.addEventListener('click', tableClick);
-updateButton.addEventListener('click', updateInventory);
+// updateButton.addEventListener('click', updateInventory);

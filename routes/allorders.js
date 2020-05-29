@@ -17,7 +17,7 @@ function getOrders(res, db, context, complete) {
           res.end();
         }
   
-        console.log(results)
+        // console.log(results);
   
         context.orders = results;
         complete();
